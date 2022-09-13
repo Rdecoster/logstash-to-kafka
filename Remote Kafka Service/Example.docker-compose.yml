@@ -1,0 +1,33 @@
+version: '3.5'
+
+networks: 
+  rmoff_kafka:
+    name: rmoff_kafka
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.0
+    container_name: zookeeper
+    networks: 
+      - rmoff_kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  broker:
+    image: confluentinc/cp-kafka:5.5.0
+    container_name: broker
+    networks: 
+      - rmoff_kafka
+    ports:
+      - "19092:19092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,CONNECTIONS_FROM_HOST://<<HOST-ADDRESS>:19092>
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONNECTIONS_FROM_HOST:PLAINTEXT
+    ## Note the KAFKA_ADVERTISED_LISTENERs for the variable <HOST-ADDRESS> Do not use localHost as this address
+    ## is sentback to the client to connnect to. This can cause issues in docker files as each docker layer will have its own localhost
+    ## for more reading on this please see this blog post. https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
