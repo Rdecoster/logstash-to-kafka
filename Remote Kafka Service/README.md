@@ -5,8 +5,8 @@
 
 ## To see logs added to the kafka 
 
-docker exec -it <broker-image-id> /bin/bash
-    $ kafka-console-consumer --bootstrap-server localhost:9092 --topic <topic-name>
+docker exec -it {<broker-image-id>} /bin/bash
+    $ kafka-console-consumer --bootstrap-server localhost:9092 --topic {<topic-name>}
 
 
 # you will start to see output when messages comminto thte topic 
