@@ -1,5 +1,5 @@
 FROM docker.elastic.co/logstash/logstash:8.4.1
 RUN rm -f /usr/share/logstash/pipeline/logstash.conf 
-COPY /pipeling/p1.conf /usr/share/logstash/pipeline/logstash.conf
+COPY /pipeline/p2.conf /usr/share/logstash/pipeline/logstash.conf
 COPY /config/logstash.yml /usr/share/logstash/config/logstash.yml
 USER root
